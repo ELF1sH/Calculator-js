@@ -38,7 +38,6 @@ button {
 }
 .input-wrapper {
     min-height: 100px;
-    margin-bottom: 40px;
 }
 .calc-input {
     display: inline-block;
@@ -50,6 +49,18 @@ button {
     font-size: 3rem;
     font-weight: bold;
     font-family: 'Roboto', sans-serif;
+    color: #E86DD4;
+}
+.answer-area {
+    height: 40px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.answer {
+    margin-right: 30px;
+    font-size: 1.5rem;
+    color: grey;
 }
 .buttons-wrapper {
     display: grid;

@@ -1,5 +1,5 @@
-import { RPM } from "./RPM.js"
-const RPMalgo = new RPM()
+import { RPN } from "./RPN.js"
+const RPNalgo = new RPN()
 const calcInput = document.getElementById("calc-input")
 const btns = document.getElementsByClassName("btn-calc")
 
@@ -18,6 +18,6 @@ export function setBtnListeners() {
     }
 }
 
-function calcLogic(RPM) {   
-    RPMalgo.launch(calcInput.value)
+function calcLogic(RPN) {   
+    RPNalgo.launch(calcInput.value)
 }

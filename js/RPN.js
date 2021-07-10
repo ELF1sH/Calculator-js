@@ -38,7 +38,7 @@ export class RPN {
             }
         }
         if (currentNumber !== "") elemArray.push(+currentNumber)
-        // elemArray is just array of elements in expression
+        // elemArray is just an array of elements in expression
         // now we need to get RPN from this expression
 
 
@@ -69,6 +69,9 @@ export class RPN {
                         }
                         s.pop() // removing opening bracket
                     }
+                    else if (s.getLast().status == 4 || s.getLast().status == 5) {
+                        s.push(elem)
+                    }
                     else {
                         let currentSignPriority
                         if (elem.status === 0 || elem.status === 1) currentSignPriority = 0
@@ -83,7 +86,7 @@ export class RPN {
                             RPN.push(lastSign)
                             s.pop()
                             
-                            if (s.isEmpty()) break
+                            if (s.isEmpty() || s.getLast().status === 4 || s.getLast().status === 5) break
                             lastSign = s.getLast()
                             if (lastSign.status === 0 || lastSign.status === 1) lastSignPriority = 0
                             else lastSignPriority = 1
@@ -96,7 +99,7 @@ export class RPN {
         }
         // end of the cycle
 
-        // adding the rest of the signs 
+        // adding the rest of the signs (if it's needed)
         while (!s.isEmpty()) {
             RPN.push(s.getLast())
             s.pop()

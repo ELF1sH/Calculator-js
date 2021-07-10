@@ -9,6 +9,7 @@ export function setBtnListeners() {
             const symbol = event.currentTarget.children[0].innerHTML
             if (symbol !== 'C' && symbol !== '=') {
                 calcInput.value += symbol
+                calcInput.focus()  // otherwise cursor doesn't follow symbols from btns
                 calcLogic()
             }
             else if (symbol == 'C') {

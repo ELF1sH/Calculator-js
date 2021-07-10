@@ -12,6 +12,10 @@ export class RPN {
             }
             else {
                 if (currentNumber !== "") {
+                    if (elemArray.length > 0 && elemArray[elemArray.length - 1].status === 5) {
+                        // add multiplication sign
+                        elemArray.push(new Sign(2))
+                    }    
                     elemArray.push(+currentNumber)
                     currentNumber = ""
                 }
@@ -29,6 +33,10 @@ export class RPN {
                         elemArray.push(new Sign(3))
                         break
                     case "(":
+                        if (elemArray.length > 0 && typeof elemArray[elemArray.length - 1] === "number") {
+                            // add multiplication sign
+                            elemArray.push(new Sign(2))
+                        }
                         elemArray.push(new Sign(4))
                         break
                     case ")":
@@ -37,7 +45,13 @@ export class RPN {
                 }
             }
         }
-        if (currentNumber !== "") elemArray.push(+currentNumber)
+        if (currentNumber !== "") {
+            if (elemArray.length > 0 && elemArray[elemArray.length - 1].status === 5) {
+                // add multiplication sign
+                elemArray.push(new Sign(2))
+            }  
+            elemArray.push(+currentNumber)
+        }
         // elemArray is just an array of elements in expression
         // now we need to get RPN from this expression
 

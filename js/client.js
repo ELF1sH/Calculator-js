@@ -21,21 +21,20 @@ export function setBtnListeners() {
 
     
     // delete all input by holding C button
-    let isHolding = true
-    function clearInput() {
-        if (isHolding) calcInput.value = ""
-    }
-
+    let timerID
     Cbtn.addEventListener("mousedown", (event) => {
         const symbol = event.currentTarget.children[0].innerHTML
         if (symbol === 'C') {
-            isHolding = true
-            setTimeout(clearInput, 700)
+            timerID = setTimeout(clearInput, 500)
         }
     })
     Cbtn.addEventListener("mouseup", () => {
-        isHolding = false
+        clearTimeout(timerID)
     })
+}
+
+function clearInput() {
+    calcInput.value = ""
 }
 
 function deleteLastSymbol() {

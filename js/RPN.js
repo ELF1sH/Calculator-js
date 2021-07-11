@@ -37,6 +37,10 @@ export class RPN {
                             // add multiplication sign
                             elemArray.push(new Sign(2))
                         }
+                        if (elemArray.length > 0 && elemArray[elemArray.length - 1].status === 5) {
+                            // add multiplication sign
+                            elemArray.push(new Sign(2))
+                        }
                         elemArray.push(new Sign(4))
                         break
                     case ")":

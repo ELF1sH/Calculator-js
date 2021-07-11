@@ -1,8 +1,8 @@
 // Reverse Polish Notation
 export class RPN {
-    launch(inputValue) {
-        let isExpressionBad = false
-
+    elemArray
+    RPN
+    inputAnalyze(inputValue) {
         let elemArray = new Array()
         let currentNumber = ""
         for (const symbol of inputValue) {
@@ -56,14 +56,16 @@ export class RPN {
             }  
             elemArray.push(+currentNumber)
         }
+
+        this.elemArray = elemArray  // updating private variable 
+    }
+
+    getRPN() {
         // elemArray is just an array of elements in expression
         // now we need to get RPN from this expression
-
-
-        // main algorithm
         const s = new Stack()
         let RPN = new Array()
-        for (const elem of elemArray) {
+        for (const elem of this.elemArray) {
             if (typeof elem === "number") {
                 RPN.push(elem)
             }
@@ -79,11 +81,7 @@ export class RPN {
                         while (s.getLast().status !== 4) {
                             RPN.push(s.getLast())
                             s.pop()
-                            if (s.isEmpty()) {
-                                isExpressionBad = true
-                                console.log("bad")
-                                return
-                            }
+                            if (s.isEmpty()) return
                         }
                         s.pop() // removing opening bracket
                     }
@@ -115,8 +113,6 @@ export class RPN {
                 }
             }
         }
-        // end of the cycle
-
         // adding the rest of the signs (if it's needed)
         while (!s.isEmpty()) {
             RPN.push(s.getLast())
@@ -127,8 +123,14 @@ export class RPN {
             console.log(elem)
         }
         console.log("------------------")
+
+
+        this.RPN = RPN
     }
 }
+
+
+
 
 class Stack {
     arr = new Array()

@@ -20,6 +20,7 @@ export function setBtnListeners() {
     Cbtn.addEventListener("click", deleteLastSymbol)
 
     
+    
     // delete all input by holding C button
     let timerID
     Cbtn.addEventListener("mousedown", (event) => {
@@ -31,6 +32,8 @@ export function setBtnListeners() {
     Cbtn.addEventListener("mouseup", () => {
         clearTimeout(timerID)
     })
+
+
 }
 
 function clearInput() {
@@ -39,10 +42,6 @@ function clearInput() {
 
 function deleteLastSymbol() {
     calcInput.value = calcInput.value.substring(0, calcInput.value.length - 1)
-}
-
-function calcLogic(RPN) {   
-    RPNalgo.launch(calcInput.value)
 }
 
 function inputSizeHandler() {
@@ -55,4 +54,14 @@ function inputSizeHandler() {
     else {
         calcInput.style.fontSize = "3rem"
     }
+}
+
+
+
+
+
+
+function calcLogic(RPN) {   
+    RPNalgo.inputAnalyze(calcInput.value)
+    RPNalgo.getRPN()
 }

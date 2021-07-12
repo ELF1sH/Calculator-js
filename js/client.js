@@ -26,6 +26,7 @@ export function setBtnListeners() {
         calcLogic()
         inputSizeHandler()
         if (event.code === "Backspace") cursorPos--
+        if (calcInput.length === 0) cursorPos = 0
         else cursorPos++
     })
 

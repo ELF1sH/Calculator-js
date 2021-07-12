@@ -20,7 +20,7 @@ export function setBtnListeners() {
     Cbtn.addEventListener("click", deleteLastSymbol)
 
     
-    
+
     // delete all input by holding C button
     let timerID
     Cbtn.addEventListener("mousedown", (event) => {
@@ -64,4 +64,5 @@ function inputSizeHandler() {
 function calcLogic(RPN) {   
     RPNalgo.inputAnalyze(calcInput.value)
     RPNalgo.getRPN()
+    RPNalgo.calculating()
 }

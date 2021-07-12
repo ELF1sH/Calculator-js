@@ -3,9 +3,13 @@ export class RPN {
     elemArray
     RPN
     inputAnalyze(inputValue) {
+        this.elemArray = []
+        this.RPN = []
+        
         let elemArray = new Array()
         let currentNumber = ""
-        for (const symbol of inputValue) {
+        for (let index = 0; index < inputValue.length; index++) {
+            const symbol = inputValue[index]
             if (symbol !== "+" && symbol !== "-" && symbol !== "×" && symbol !== "÷"
             && symbol !== "(" && symbol !== ")") {
                 currentNumber += symbol
@@ -24,7 +28,18 @@ export class RPN {
                         elemArray.push(new Sign(0))
                         break
                     case "-":
-                        elemArray.push(new Sign(1))
+                        if (index === 0 && isSymbolDigit(inputValue[index + 1])) {
+                            currentNumber += "-"
+                        }
+                        else if (index !== 0 && 
+                            !isSymbolDigit(inputValue[index - 1]) && 
+                            inputValue[index - 1] !== ")" && 
+                            isSymbolDigit(inputValue[index + 1])) {
+                                currentNumber += "-"
+                        }
+                        else {
+                            elemArray.push(new Sign(1))
+                        }
                         break
                     case "×":
                         elemArray.push(new Sign(2))
@@ -127,9 +142,29 @@ export class RPN {
 
         this.RPN = RPN
     }
+
+
+    calculating() {
+        let isExpressionBad = false
+        
+        this.RPN.forEach((item, index) => {
+            if (typeof item !== "number" && (item.status === 4 || item.status === 5)) {
+                isExpressionBad = true
+                console.log("BAD EXPRESSION")
+                return
+            }
+        })
+    }
 }
 
 
+function isSymbolDigit(symbol) {
+    if (symbol == "0" || symbol == "1" || symbol == "2" || symbol == "3" || symbol == "4" ||
+        symbol == "5" || symbol == "6" || symbol == "7" || symbol == "8" || symbol == "9") {
+            return true
+    }
+    else return false
+}
 
 
 class Stack {

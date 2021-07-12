@@ -5,19 +5,42 @@ const btns = document.getElementsByClassName("btn-calc")
 const Cbtn = document.getElementById("C-btn")
 
 export function setBtnListeners() {
+    let cursorPos = 0
+
     for (const btn of btns) {
         btn.addEventListener("click", (event) => {
             const symbol = event.currentTarget.children[0].innerHTML
             if (symbol !== 'C' && symbol !== '=') {
-                calcInput.value += symbol        
+                calcInput.value = addSymbol(calcInput.value, symbol, cursorPos)
+                cursorPos++
+                calcInput.focus()
+                calcInput.setSelectionRange(cursorPos, cursorPos) 
             }
-            calcInput.focus()  // otherwise cursor doesn't follow symbols entering from btns
             calcLogic()
             inputSizeHandler()
         })
     }
 
-    Cbtn.addEventListener("click", deleteLastSymbol)
+    // handling keyboard behavior
+    calcInput.addEventListener("keydown", (event) => {
+        calcLogic()
+        inputSizeHandler()
+        if (event.code === "Backspace") cursorPos--
+        else cursorPos++
+    })
+
+    calcInput.addEventListener("click", (event) => {
+        cursorPos = event.target.selectionStart
+    })
+
+    Cbtn.addEventListener("click", () => {
+        deleteOneSymbol(cursorPos)
+        if (cursorPos > 0) cursorPos--
+        calcInput.focus()
+        calcInput.setSelectionRange(cursorPos, cursorPos) 
+        calcLogic()
+        inputSizeHandler()
+    })
 
     
 
@@ -26,22 +49,30 @@ export function setBtnListeners() {
     Cbtn.addEventListener("mousedown", (event) => {
         const symbol = event.currentTarget.children[0].innerHTML
         if (symbol === 'C') {
-            timerID = setTimeout(clearInput, 500)
+            timerID = setTimeout(() => {
+                clearInput()
+                cursorPos = 0
+            }, 500)
         }
     })
     Cbtn.addEventListener("mouseup", () => {
         clearTimeout(timerID)
     })
-
-
 }
+
 
 function clearInput() {
     calcInput.value = ""
 }
 
-function deleteLastSymbol() {
-    calcInput.value = calcInput.value.substring(0, calcInput.value.length - 1)
+function deleteOneSymbol(index) {
+    const value = calcInput.value
+    if (index - calcInput.value.length === 1) {
+        calcInput.value = value.substring(0, index - 2) + value.substring(index - 1, value.length)
+    }
+    else {
+        calcInput.value = value.substring(0, index - 1) + value.substring(index, value.length)
+    }
 }
 
 function inputSizeHandler() {
@@ -56,12 +87,14 @@ function inputSizeHandler() {
     }
 }
 
+function addSymbol(string, symbol, index) {
+    return string.substring(0, index) + symbol + string.substring(index, string.length)
+}
 
 
 
 
-
-function calcLogic(RPN) {   
+function calcLogic() {   
     RPNalgo.inputAnalyze(calcInput.value)
     RPNalgo.getRPN()
     RPNalgo.calculating()

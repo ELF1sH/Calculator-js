@@ -11,6 +11,11 @@ export function setBtnListeners() {
         btn.addEventListener("click", (event) => {
             const symbol = event.currentTarget.children[0].innerHTML
             if (symbol !== 'C' && symbol !== '=') {
+                if (calcInput.value.length !== 0 && isSymbolSign(symbol) && 
+                isSymbolSign(calcInput.value[calcInput.value.length - 1])) {
+                    deleteOneSymbol(cursorPos)
+                    cursorPos--
+                }
                 calcInput.value = addSymbol(calcInput.value, symbol, cursorPos)
                 cursorPos++
                 calcInput.focus()
@@ -90,6 +95,13 @@ function inputSizeHandler() {
 
 function addSymbol(string, symbol, index) {
     return string.substring(0, index) + symbol + string.substring(index, string.length)
+}
+
+function isSymbolSign(symbol) {
+    if (symbol === "+" || symbol === "-" || symbol === "×" || symbol === "÷")
+        return true
+    else 
+        return false
 }
 
 

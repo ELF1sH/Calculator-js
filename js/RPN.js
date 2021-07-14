@@ -147,13 +147,60 @@ export class RPN {
     calculating() {
         let isExpressionBad = false
         
-        this.RPN.forEach((item, index) => {
+        // checking for obvious errors in RPN
+        for (let index = 0; index < this.RPN.length; index++) {
+            const item = this.RPN[index]
             if (typeof item !== "number" && (item.status === 4 || item.status === 5)) {
                 isExpressionBad = true
-                console.log("BAD EXPRESSION")
-                return
+                break
             }
-        })
+            if ((index === 1 || index === 0) && typeof item !== "number") {
+                isExpressionBad = true
+                break
+            }
+        }
+
+        // calculating cycle
+        while (true) {
+            if (this.RPN.length < 2) break
+
+            if (typeof this.RPN[0] !== "number" || typeof this.RPN[1] !== "number") {
+                isExpressionBad = true
+                break
+            }
+
+            for (let i = 0; i < this.RPN.length; i++) {
+                if (typeof this.RPN[i] !== "number") {
+                    const status = this.RPN[i].status
+                    let answer
+                    switch (status) {
+                        case 0:
+                            answer = this.RPN[i - 2] + this.RPN[i - 1]
+                            break
+                        case 1:
+                            answer = this.RPN[i - 2] - this.RPN[i - 1]
+                            break
+                        case 2:
+                            answer = this.RPN[i - 2] * this.RPN[i - 1]
+                            break
+                        case 3:
+                            answer = this.RPN[i - 2] / this.RPN[i - 1]
+                            break
+                    }
+                    this.RPN.splice(i - 2, 3, answer)
+                    break
+                }
+            }   
+        }
+
+        if (!isExpressionBad) {
+            console.log("ANSWER")
+            for (const elem of this.RPN) console.log(elem)
+            console.log("END OF THE ANSWER")
+        }
+        else {
+            console.log("BAD EXPRESSION")
+        }
     }
 }
 

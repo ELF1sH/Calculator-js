@@ -1,3 +1,5 @@
+import { printAnswerInArea, clearAnswerArea } from "./client.js"
+
 // Reverse Polish Notation
 export class RPN {
     elemArray
@@ -192,13 +194,16 @@ export class RPN {
                 }
             }   
         }
+        clearAnswerArea()
 
         if (!isExpressionBad) {
             console.log("ANSWER")
             for (const elem of this.RPN) console.log(elem)
             console.log("END OF THE ANSWER")
+            printAnswerInArea(this.RPN[0])
         }
         else {
+            clearAnswerArea()
             console.log("BAD EXPRESSION")
         }
     }

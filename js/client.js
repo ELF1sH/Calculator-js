@@ -3,12 +3,18 @@ const RPNalgo = new RPN()
 const calcInput = document.getElementById("calc-input")
 const btns = document.getElementsByClassName("btn-calc")
 const Cbtn = document.getElementById("C-btn")
+const answerSpan = document.getElementById("answer-span")
 
 export function setBtnListeners() {
     let cursorPos = 0
+    let wasError = false
 
     for (const btn of btns) {
         btn.addEventListener("click", (event) => {
+            if (wasError) {
+                calcInput.value = ""
+                wasError = false
+            }
             const symbol = event.currentTarget.children[0].innerHTML
             if (symbol !== 'C' && symbol !== '=') {
                 if (calcInput.value.length !== 0 && isSymbolSign(symbol) && 
@@ -20,8 +26,21 @@ export function setBtnListeners() {
                 cursorPos++
                 calcInput.focus()
                 calcInput.setSelectionRange(cursorPos, cursorPos) 
+
+                calcLogic() 
             }
-            calcLogic()
+            if (symbol === "=") {
+                console.log(answerSpan.innerHTML)
+                if (!answerSpan.innerHTML && calcInput.value.length > 0) {
+                    calcInput.value = "BAD EXPRESSION"
+                    clearAnswerArea()
+                    wasError = true
+                }
+                else if (answerSpan.innerHTML) {
+                    calcInput.value = answerSpan.innerHTML
+                    clearAnswerArea()
+                }
+            }
             inputSizeHandler()
         })
     }
@@ -106,9 +125,23 @@ function isSymbolSign(symbol) {
 
 
 
-
 function calcLogic() {   
     RPNalgo.inputAnalyze(calcInput.value)
-    RPNalgo.getRPN()
-    RPNalgo.calculating()
+    if (calcInput.value.length > 0) {
+        RPNalgo.getRPN()
+        RPNalgo.calculating()
+    }
+    else {
+        clearAnswerArea()
+    }
+}
+
+
+
+export function printAnswerInArea(answer) {
+    answerSpan.innerHTML = answer
+}
+
+export function clearAnswerArea() {
+    answerSpan.innerHTML = ""
 }

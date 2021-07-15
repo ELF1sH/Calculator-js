@@ -30,7 +30,6 @@ export function setBtnListeners() {
                 calcLogic() 
             }
             if (symbol === "=") {
-                console.log(answerSpan.innerHTML)
                 if (!answerSpan.innerHTML && calcInput.value.length > 0) {
                     calcInput.value = "BAD EXPRESSION"
                     clearAnswerArea()
@@ -39,6 +38,7 @@ export function setBtnListeners() {
                 else if (answerSpan.innerHTML) {
                     calcInput.value = answerSpan.innerHTML
                     clearAnswerArea()
+                    cursorPos = calcInput.value.length
                 }
             }
             inputSizeHandler()

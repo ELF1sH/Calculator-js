@@ -136,12 +136,6 @@ export class RPN {
             s.pop()
         }
 
-        for (const elem of RPN) {
-            console.log(elem)
-        }
-        console.log("------------------")
-
-
         this.RPN = RPN
     }
 
@@ -196,15 +190,11 @@ export class RPN {
         }
         clearAnswerArea()
 
-        if (!isExpressionBad) {
-            console.log("ANSWER")
-            for (const elem of this.RPN) console.log(elem)
-            console.log("END OF THE ANSWER")
+        if (!isExpressionBad && !isNaN(this.RPN[0])) {
             printAnswerInArea(this.RPN[0])
         }
         else {
             clearAnswerArea()
-            console.log("BAD EXPRESSION")
         }
     }
 }

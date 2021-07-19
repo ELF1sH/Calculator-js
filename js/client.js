@@ -46,6 +46,7 @@ export function setBtnListeners() {
         })
     }
 
+
     // handling keyboard behavior
     calcInput.addEventListener("keydown", (event) => {
         calcLogic()
@@ -54,11 +55,12 @@ export function setBtnListeners() {
         if (calcInput.length === 0) cursorPos = 0
         else cursorPos++
     })
-
     calcInput.addEventListener("click", (event) => {
         cursorPos = event.target.selectionStart
     })
 
+
+    // listener for deleting only one symbol
     Cbtn.addEventListener("click", () => {
         deleteOneSymbol(cursorPos)
         if (cursorPos > 0) cursorPos--
@@ -69,7 +71,6 @@ export function setBtnListeners() {
     })
 
     
-
     // delete all input by holding C button
     let timerID
     Cbtn.addEventListener("mousedown", (event) => {
@@ -81,8 +82,7 @@ export function setBtnListeners() {
                 setTimeout(() => {
                     clearInput()
                     cursorPos = 0
-                    console.log("clear")
-                }, timeDelay - 400)
+                }, timeDelay * 0.4)
             }, 500)
         }
     })

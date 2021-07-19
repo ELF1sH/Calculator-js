@@ -43,6 +43,10 @@ button {
 .input-area {
     min-height: 100px;
 }
+.input-wrapper {
+    position: relative;
+    overflow: hidden;
+}
 .calc-input {
     display: inline-block;
     width: 100%;

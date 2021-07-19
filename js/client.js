@@ -1,4 +1,5 @@
 import { RPN } from "./RPN.js"
+import { fullErasureAnimation } from "./animations.js"
 const RPNalgo = new RPN()
 const calcInput = document.getElementById("calc-input")
 const btns = document.getElementsByClassName("btn-calc")
@@ -73,10 +74,15 @@ export function setBtnListeners() {
     let timerID
     Cbtn.addEventListener("mousedown", (event) => {
         const symbol = event.currentTarget.children[0].innerHTML
+        let timeDelay 
         if (symbol === 'C') {
             timerID = setTimeout(() => {
-                clearInput()
-                cursorPos = 0
+                timeDelay = fullErasureAnimation()
+                setTimeout(() => {
+                    clearInput()
+                    cursorPos = 0
+                    console.log("clear")
+                }, timeDelay - 400)
             }, 500)
         }
     })
@@ -88,6 +94,7 @@ export function setBtnListeners() {
 
 function clearInput() {
     calcInput.value = ""
+    answerSpan.innerHTML = ""
 }
 
 function deleteOneSymbol(index) {

@@ -6,14 +6,15 @@ const btns = document.getElementsByClassName("btn-calc")
 const Cbtn = document.getElementById("C-btn")
 const answerSpan = document.getElementById("answer-span")
 
+let cursorPos = 0
+
 export function setBtnListeners() {
-    let cursorPos = 0
     let wasError = false
 
     for (const btn of btns) {
         btn.addEventListener("click", (event) => {
             if (wasError) {
-                calcInput.value = ""
+                clearInput()
                 wasError = false
             }
             const symbol = event.currentTarget.children[0].innerHTML
@@ -21,10 +22,8 @@ export function setBtnListeners() {
                 if (calcInput.value.length !== 0 && isSymbolSign(symbol) && 
                 isSymbolSign(calcInput.value[calcInput.value.length - 1])) {
                     deleteOneSymbol(cursorPos)
-                    cursorPos--
                 }
                 calcInput.value = addSymbol(calcInput.value, symbol, cursorPos)
-                cursorPos++
                 calcInput.focus()
                 calcInput.setSelectionRange(cursorPos, cursorPos) 
 
@@ -63,7 +62,6 @@ export function setBtnListeners() {
     // listener for deleting only one symbol
     Cbtn.addEventListener("click", () => {
         deleteOneSymbol(cursorPos)
-        if (cursorPos > 0) cursorPos--
         calcInput.focus()
         calcInput.setSelectionRange(cursorPos, cursorPos) 
         calcLogic()
@@ -105,6 +103,7 @@ function deleteOneSymbol(index) {
     else {
         calcInput.value = value.substring(0, index - 1) + value.substring(index, value.length)
     }
+    if (cursorPos > 0) cursorPos--
 }
 
 function inputSizeHandler() {
@@ -120,6 +119,7 @@ function inputSizeHandler() {
 }
 
 function addSymbol(string, symbol, index) {
+    cursorPos++
     return string.substring(0, index) + symbol + string.substring(index, string.length)
 }
 

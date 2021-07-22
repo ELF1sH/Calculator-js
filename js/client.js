@@ -107,11 +107,14 @@ function clearInput() {
 
 function deleteOneSymbol(index) {
     const value = calcInput.value
+    const underInputValue = underInput.innerText
     if (index - calcInput.value.length === 1) {
         calcInput.value = value.substring(0, index - 2) + value.substring(index - 1, value.length)
+        underInput.innerText = underInputValue.substring(0, index - 2) + underInputValue.substring(index - 1, underInputValue.length)
     }
     else {
         calcInput.value = value.substring(0, index - 1) + value.substring(index, value.length)
+        underInput.innerText = underInputValue.substring(0, index - 1) + underInputValue.substring(index, underInputValue.length)
     }
     if (cursorPos > 0) cursorPos--
 }

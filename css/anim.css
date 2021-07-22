@@ -1,4 +1,4 @@
-/* special block for full erasure */
+/* full erasure */
 .overlappingDiv {
     position: absolute;
     top: -100%;
@@ -14,5 +14,22 @@
     }
     100% {
         top: 0;
+    }
+}
+
+
+/* one symbol erasure */
+.last-symbol-under-input {
+    position: absolute;
+}
+
+@keyframes symbolGoesUp {
+    0% {
+        top: 0;
+        opacity: 1;
+    }
+    100% {
+        top: -40px;
+        opacity: 0;
     }
 }

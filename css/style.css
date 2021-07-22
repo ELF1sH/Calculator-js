@@ -47,17 +47,23 @@ button {
     position: relative;
     overflow: hidden;
 }
+.calc-input-font {
+    font-size: 3rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: #E86DD4;
+}
+#under-input {
+    position: absolute;
+    top: 21px;
+    left: 20px;
+}
 .calc-input {
     display: inline-block;
     width: 100%;
     line-height: 100px;
     background-color: #fff;
-
     padding: 0 20px;
-    font-size: 3rem;
-    font-weight: bold;
-    font-family: 'Roboto', sans-serif;
-    color: #E86DD4;
 
     transition: all .5s linear;
 }

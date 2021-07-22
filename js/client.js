@@ -1,10 +1,11 @@
 import { RPN } from "./RPN.js"
-import { fullErasureAnimation } from "./animations.js"
+import { fullErasureAnimation, oneSymbolErasureAnimation } from "./animations.js"
 const RPNalgo = new RPN()
 const calcInput = document.getElementById("calc-input")
 const btns = document.getElementsByClassName("btn-calc")
 const Cbtn = document.getElementById("C-btn")
 const answerSpan = document.getElementById("answer-span")
+const underInput = document.getElementById("under-input")
 
 let cursorPos = 0
 
@@ -23,7 +24,8 @@ export function setBtnListeners() {
                 isSymbolSign(calcInput.value[calcInput.value.length - 1])) {
                     deleteOneSymbol(cursorPos)
                 }
-                calcInput.value = addSymbol(calcInput.value, symbol, cursorPos)
+                calcInput.value = addSymbol(calcInput.value, symbol, cursorPos, true)
+                underInput.innerText = addSymbol(underInput.innerText, symbol, cursorPos, false)
                 calcInput.focus()
                 calcInput.setSelectionRange(cursorPos, cursorPos) 
 
@@ -32,40 +34,47 @@ export function setBtnListeners() {
             if (symbol === "=") {
                 if (!answerSpan.innerHTML && calcInput.value.length > 0) {
                     calcInput.value = "BAD EXPRESSION"
+                    underInput.innerText = "BAD EXPRESSION"
                     clearAnswerArea()
                     wasError = true
                 }
                 else if (answerSpan.innerHTML) {
                     calcInput.value = answerSpan.innerHTML
+                    underInput.innerText = answerSpan.innerText
                     clearAnswerArea()
                     cursorPos = calcInput.value.length
                 }
-            }
+            }   
             inputSizeHandler()
         })
     }
 
 
     // handling keyboard behavior
-    calcInput.addEventListener("keydown", (event) => {
+    calcInput.addEventListener("keyup", (event) => {
+        cursorPos = calcInput.value.length
         calcLogic()
         inputSizeHandler()
-        if (event.code === "Backspace") cursorPos--
-        if (calcInput.length === 0) cursorPos = 0
-        else cursorPos++
+        if (cursorPos < 0) cursorPos = 0
     })
+
+
+    // handling clicking on input by setting cursorPos 
     calcInput.addEventListener("click", (event) => {
-        cursorPos = event.target.selectionStart
+        cursorPos = event.target.selectionStart 
     })
 
 
     // listener for deleting only one symbol
     Cbtn.addEventListener("click", () => {
+        if (calcInput.value.length === 0) return
+        
         deleteOneSymbol(cursorPos)
         calcInput.focus()
         calcInput.setSelectionRange(cursorPos, cursorPos) 
         calcLogic()
         inputSizeHandler()
+        oneSymbolErasureAnimation()
     })
 
     
@@ -93,6 +102,7 @@ export function setBtnListeners() {
 function clearInput() {
     calcInput.value = ""
     answerSpan.innerHTML = ""
+    underInput.innerText = ""
 }
 
 function deleteOneSymbol(index) {
@@ -109,17 +119,23 @@ function deleteOneSymbol(index) {
 function inputSizeHandler() {
     if (calcInput.value.length > 16) {
         calcInput.style.fontSize = "1.5rem"
+        underInput.style.fontSize = "1.5rem"
+        underInput.style.top = "36px"
     }
     else if (calcInput.value.length > 10) {
         calcInput.style.fontSize = "2rem"
+        underInput.style.fontSize = "2rem"
+        underInput.style.top = "30px"
     }
     else {
         calcInput.style.fontSize = "3rem"
+        underInput.style.fontSize = "3rem"
+        underInput.style.top = "21px"
     }
 }
 
-function addSymbol(string, symbol, index) {
-    cursorPos++
+function addSymbol(string, symbol, index, isInput) {
+    if (isInput) cursorPos++
     return string.substring(0, index) + symbol + string.substring(index, string.length)
 }
 

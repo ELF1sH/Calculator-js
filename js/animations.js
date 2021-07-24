@@ -59,7 +59,7 @@ function checkAnimationState() {
     let underInputLength = underInput.innerText.length 
     const lastSymbolSpan = document.getElementById("last-symbol-span")
     if (lastSymbolSpan) underInputLength++
-    if (calcInput.value.length - underInputLength !== -1) {
+    if (calcInput.value.length - underInputLength !== -1 && lastSymbolSpan) {
         lastSymbolSpan.remove()
     }
 }

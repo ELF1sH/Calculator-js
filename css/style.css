@@ -60,6 +60,7 @@ button {
 }
 .calc-input {
     display: inline-block;
+    position: relative;
     width: 100%;
     line-height: 100px;
     background-color: #fff;
@@ -72,8 +73,10 @@ button {
     display: flex;
     justify-content: end;
     align-items: center;
+    position: relative;
 }
 .answer {
+    position: absolute;
     margin-right: 30px;
     font-size: 1.9rem;
     color: grey;

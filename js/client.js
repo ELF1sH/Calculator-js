@@ -8,10 +8,9 @@ const answerSpan = document.getElementById("answer-span")
 const underInput = document.getElementById("under-input")
 
 let cursorPos = 0
+let wasError = false
 
 export function setBtnListeners() {
-    let wasError = false
-
     for (const btn of btns) {
         btn.addEventListener("click", (event) => {
             if (wasError) {
@@ -32,18 +31,7 @@ export function setBtnListeners() {
                 calcLogic() 
             }
             if (symbol === "=") {
-                if (!answerSpan.innerHTML && calcInput.value.length > 0) {
-                    calcInput.value = "BAD EXPRESSION"
-                    underInput.innerText = "BAD EXPRESSION"
-                    clearAnswerArea()
-                    wasError = true
-                }
-                else if (answerSpan.innerHTML) {
-                    calcInput.value = answerSpan.innerHTML
-                    underInput.innerText = answerSpan.innerText
-                    clearAnswerArea()
-                    cursorPos = calcInput.value.length
-                }
+                getResultHandler()
             }   
             inputSizeHandler()
         })
@@ -52,11 +40,57 @@ export function setBtnListeners() {
 
     // handling keyboard behavior
     calcInput.addEventListener("keyup", (event) => {
-        cursorPos = calcInput.value.length
-        calcLogic()
-        inputSizeHandler()
-        if (cursorPos < 0) cursorPos = 0
+        if (event.key === "=") {
+            getResultHandler()
+        }
+        else if (event.key === "Backspace") {
+            if (calcInput.value.length === 0) return
+        
+            deleteOneSymbol(cursorPos)
+            calcInput.focus()
+            calcInput.setSelectionRange(cursorPos, cursorPos) 
+            calcLogic()
+            inputSizeHandler()
+            oneSymbolErasureAnimation()
+        }
+        else {
+            cursorPos = calcInput.value.length
+            calcLogic()
+            inputSizeHandler()
+            if (cursorPos < 0) cursorPos = 0
+        }
     })
+    calcInput.addEventListener("keydown", event => {
+        if (!isSymbolDigit(event.key) && event.key !== "+" && event.key !== "-" && 
+        event.key !== "*" && event.key !== "/" && event.key !== "(" && event.key !== ")"  && event.key !== ".") {
+            event.preventDefault()
+        }
+        else if (event.key === "*") {
+            event.preventDefault()
+            calcInput.value = addSymbol(calcInput.value, "×", cursorPos, true)
+            underInput.innerText = addSymbol(underInput.innerText, "×", cursorPos, false)
+            calcInput.focus()
+            calcInput.setSelectionRange(cursorPos, cursorPos) 
+            cursorPos++
+        }
+        else if (event.key === "/") {
+            event.preventDefault()
+            calcInput.value = addSymbol(calcInput.value, "÷", cursorPos, true)
+            underInput.innerText = addSymbol(underInput.innerText, "÷", cursorPos, false)
+            calcInput.focus()
+            calcInput.setSelectionRange(cursorPos, cursorPos) 
+            cursorPos++
+        }
+        else {
+            const symbol = event.key
+            console.log(symbol)
+            underInput.innerText = addSymbol(underInput.innerText, symbol, cursorPos, true)
+            calcInput.focus()
+            calcInput.setSelectionRange(cursorPos, cursorPos) 
+            cursorPos++
+        }
+    })
+
 
 
     // handling clicking on input by setting cursorPos 
@@ -144,6 +178,33 @@ function isSymbolSign(symbol) {
         return true
     else 
         return false
+}
+
+function isSymbolDigit(symbol) {
+    if (symbol == "0" || symbol == "1" || symbol == "2" || symbol == "3" || symbol == "4"
+        || symbol == "5" || symbol == "6" || symbol == "7" || symbol == "8" || symbol == "9") {
+        return true
+    }
+    else return false
+}
+
+function getResultHandler() {
+    if (!answerSpan.innerHTML && calcInput.value.length > 0) {
+        calcInput.value = "BAD EXPRESSION"
+        underInput.innerHTML = ""
+        clearAnswerArea()
+        wasError = true
+        inputSizeHandler()
+    }
+    else if (answerSpan.innerHTML) {
+        calcInput.value = answerSpan.innerHTML
+        underInput.innerText = answerSpan.innerText
+        clearAnswerArea()
+        cursorPos = calcInput.value.length
+        calcInput.focus()
+        calcInput.setSelectionRange(cursorPos, cursorPos)
+        inputSizeHandler()
+    }
 }
 
 

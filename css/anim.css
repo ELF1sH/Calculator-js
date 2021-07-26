@@ -34,3 +34,40 @@
         opacity: 0;
     }
 }
+
+
+
+/* side-bar */
+@keyframes sidebarMovingLeft {
+    0% {
+        left: 100vw;
+    }
+    100% {
+        left: calc(100vw - 400px)
+    }
+}
+@keyframes btnMovingLeft {
+    0% {
+        right: 0;
+    }
+    100% {
+        right: 340px;
+    }
+}
+
+@keyframes sidebarMovingRight {
+    0% {
+        left: calc(100vw - 400px)
+    }
+    100% {
+        left: 100vw;
+    }
+}
+@keyframes btnMovingRight {
+    0% {
+        right: 340px;
+    }
+    100% {
+        right: 0;
+    }
+}

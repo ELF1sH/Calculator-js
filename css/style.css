@@ -75,7 +75,7 @@ button {
     align-items: center;
     position: relative;
 }
-.answer {
+.answer-area .answer {
     position: absolute;
     margin-right: 30px;
     font-size: 1.9rem;

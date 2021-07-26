@@ -1,5 +1,6 @@
 import { RPN } from "./RPN.js"
 import { fullErasureAnimation, oneSymbolErasureAnimation } from "./animations.js"
+import { addItem } from "./history.js"
 const RPNalgo = new RPN()
 const calcInput = document.getElementById("calc-input")
 const btns = document.getElementsByClassName("btn-calc")
@@ -197,6 +198,8 @@ function getResultHandler() {
         inputSizeHandler()
     }
     else if (answerSpan.innerHTML) {
+        addItem(calcInput.value, answerSpan.innerHTML)
+
         calcInput.value = answerSpan.innerHTML
         underInput.innerText = answerSpan.innerText
         clearAnswerArea()

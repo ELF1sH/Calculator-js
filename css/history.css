@@ -31,6 +31,7 @@ body {
     left: 100%;
 
     padding: 50px;
+    overflow: scroll;
 }
 .side-panel-wrapper .header {
     color: #E692E1;
